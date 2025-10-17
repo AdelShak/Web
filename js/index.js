@@ -27,7 +27,7 @@ function showSuccess(text) {
 // 📥 Загрузить заказы
 async function loadOrders() {
     try {
-        const response = await apiRequest('/api/orders', { method: 'GET' }); // получение заказов
+        const response = await apiRequest('https://localhost:49813/api/orders', { method: 'GET' }); // получение заказов
         console.log(response.json());
     } catch (error) {
         console.error('Ошибка:', error);
@@ -38,7 +38,7 @@ async function loadOrders() {
 // 📤 Создать заказ
 async function createOrder(orderData) {
     try {
-        const response = await apiRequest('/api/orders', {
+        const response = await apiRequest('https://localhost:49813/api/Order', {
             method: 'POST',
             body: JSON.stringify(orderData)
         });
