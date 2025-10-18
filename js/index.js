@@ -27,10 +27,13 @@ function showSuccess(text) {
 // 📥 Загрузить заказы
 async function loadOrders() {
     try {
-        const response = await apiRequest('https://localhost:49813/api/orders', { method: 'GET' }); // получение заказов
-        console.log(response.json());
+        const response = await apiRequest('/api/orders', { method: 'GET' });
+        if(!response.ok) {showError("ошибка загрузки заказов")};
+        const data = await response.json(); // правильное использование
+        console.log('Загружены заказы:', data);
+        return data;
     } catch (error) {
-        console.error('Ошибка:', error);
+        console.error('Ошибка загрузки:', error);
         throw error;
     }
 }
@@ -38,7 +41,7 @@ async function loadOrders() {
 // 📤 Создать заказ
 async function createOrder(orderData) {
     try {
-        const response = await apiRequest('https://localhost:49813/api/Order', {
+        const response = await apiRequest('/api/orders', {
             method: 'POST',
             body: JSON.stringify(orderData)
         });
@@ -77,6 +80,7 @@ async function refreshOrders() {
 
 // 📝 Обработчик формы
 orderForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
 
     const formData = new FormData(this);
     const orderData = {
@@ -93,6 +97,8 @@ orderForm.addEventListener('submit', async function(event) {
     try {
         // Создаем заказ
         const newOrder = await createOrder(orderData);
+        showSuccess("Ура! Заказ скоро приедет");
+        console.log(newOrder)
         // Очищаем форму
         this.reset();
         // Обновляем список
